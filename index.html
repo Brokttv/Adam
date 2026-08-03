@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adam Elimadi</title>
+  <!-- Theme initialization (runs before paint to avoid flash) -->
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem('adam-theme');
+        if (stored === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else if (stored !== 'light' &&
+                   window.matchMedia &&
+                   window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Warm cream palette, matched to reference site */
+      --bg: #F2EEE5;
+      --bg-raised: #FAF7F0;
+      --ink: #1F1B16;
+      --ink-muted: #6B5D4F;
+      --ink-faint: #A39385;
+      --rule: #D9D0C1;
+      --accent: #92400E;
+      --accent-warm: #B45309;
+
+      /* Typography stacks */
+      --font-display: "Crimson Pro", "Source Serif 4", Georgia, serif;
+      --font-body: "Source Serif 4", "Crimson Pro", Georgia, serif;
+      --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    [data-theme="dark"] {
+      --bg: #1C1814;
+      --bg-raised: #252017;
+      --ink: #F2EEE5;
+      --ink-muted: #B8A890;
+      --ink-faint: #6B5D4F;
+      --rule: #3A3228;
+      --accent: #D97706;
+      --accent-warm: #F59E0B;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 17px;
+      font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+      transition: background-color 300ms ease, color 300ms ease;
+    }
+    .theme-bar {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
+      z-index: 100;
+    }
+    .theme-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--bg-raised);
+      border: 1px solid var(--rule);
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+    }
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .theme-toggle svg {
+      width: 18px;
+      height: 18px;
+    }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    header {
+      padding: 72px 0 40px;
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      color: var(--ink);
+    }
+    .subtitle {
+      font-family: var(--font-mono);
+      color: var(--ink-muted);
+      font-size: 0.9rem;
+      margin-bottom: 28px;
+      letter-spacing: 0.01em;
+    }
+    .links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .links a {
+      color: var(--ink-muted);
+      opacity: 1;
+      transition: color 0.15s;
+      display: flex;
+    }
+    .links a:hover {
+      color: var(--accent);
+    }
+    .links svg {
+      width: 19px;
+      height: 19px;
+    }
+    section {
+      padding: 36px 0;
+      border-top: 1px solid var(--rule);
+    }
+    h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .pub {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 24px;
+      margin-bottom: 36px;
+      align-items: start;
+    }
+    .pub-label {
+      font-family: var(--font-mono);
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      padding-top: 3px;
+    }
+    .pub-title {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+    .pub-desc {
+      font-family: var(--font-body);
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+    .pub-link a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .pub-link a:hover {
+      color: var(--accent-warm);
+      text-decoration-color: var(--accent-warm);
+    }
+    .item {
+      margin-bottom: 20px;
+    }
+    .item a {
+      font-family: var(--font-body);
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: var(--ink-faint);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      font-weight: 600;
+    }
+    .item a:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+    .item .meta {
+      font-family: var(--font-mono);
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      margin-top: 3px;
+    }
+    .repl {
+      margin-bottom: 22px;
+    }
+    .repl-title a {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--ink);
+      text-decoration: underline;
+      text-decoration-color: var(--ink-faint);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .repl-title a:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
+    .repl-desc {
+      font-family: var(--font-body);
+      color: var(--ink-muted);
+      font-size: 0.95rem;
+      margin: 6px 0 8px;
+      line-height: 1.6;
+    }
+    .repl-link {
+      margin-top: 4px;
+    }
+    .repl-link a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .repl-link a:hover {
+      color: var(--accent-warm);
+      text-decoration-color: var(--accent-warm);
+    }
+    details.section-collapse {
+      margin-top: 4px;
+    }
+    details.section-collapse > summary {
+      list-style: none;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      padding: 0.5rem 0;
+      user-select: none;
+      transition: color 150ms ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    details.section-collapse > summary::-webkit-details-marker { display: none; }
+    details.section-collapse > summary::marker { content: ""; }
+    details.section-collapse > summary::after {
+      content: "↓";
+      color: var(--ink-faint);
+      transition: color 150ms ease;
+    }
+    details.section-collapse[open] > summary::after {
+      content: "↑";
+    }
+    details.section-collapse > summary:hover,
+    details.section-collapse > summary:hover::after {
+      color: var(--accent);
+    }
+    details.section-collapse .s-open { display: none; }
+    details.section-collapse[open] .s-closed { display: none; }
+    details.section-collapse[open] .s-open { display: inline; }
+    details.section-collapse .section-collapse-body {
+      padding-top: 20px;
+    }
+    .life-lore p {
+      font-family: var(--font-body);
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 1.1em;
+    }
+    .life-lore p:last-child {
+      margin-bottom: 0;
+    }
+    .life-lore a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    .life-lore a:hover {
+      color: var(--accent-warm);
+      text-decoration-color: var(--accent-warm);
+    }
+    .t-date {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      margin-bottom: 3px;
+    }
+    .t-text {
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+    .t-text a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    .t-text a:hover {
+      color: var(--accent-warm);
+      text-decoration-color: var(--accent-warm);
+    }
+    .t-break {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      margin: 28px 0;
+      padding-left: 0;
+      position: relative;
+    }
+    .t-break::before,
+    .t-break::after {
+      content: "";
+      display: inline-block;
+      width: 32px;
+      height: 1px;
+      background: var(--rule);
+      vertical-align: middle;
+      margin: 0 10px;
+    }
+    .t-subhead {
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--ink-muted);
+      letter-spacing: 0.02em;
+      margin: 32px 0 14px;
+    }
+    .t-subhead:first-child {
+      margin-top: 0;
+    }
+    details.t-collapse {
+      margin-bottom: 4px;
+    }
+    details.t-collapse > summary {
+      list-style: none;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      padding: 0.5rem 0;
+      user-select: none;
+      transition: color 150ms ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    details.t-collapse > summary::-webkit-details-marker { display: none; }
+    details.t-collapse > summary::marker { content: ""; }
+    details.t-collapse > summary::after {
+      content: "↓";
+      color: var(--ink-faint);
+      transition: color 150ms ease;
+    }
+    details.t-collapse[open] > summary::after {
+      content: "↑";
+    }
+    details.t-collapse > summary:hover,
+    details.t-collapse > summary:hover::after {
+      color: var(--accent);
+    }
+    details.t-collapse .s-open { display: none; }
+    details.t-collapse[open] .s-closed { display: none; }
+    details.t-collapse[open] .s-open { display: inline; }
+    details.t-collapse .t-collapse-body {
+      padding-top: 20px;
+    }
+    .lore-text p {
+      font-family: var(--font-body);
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 1.1em;
+    }
+    .lore-text p:last-child {
+      margin-bottom: 0;
+    }
+    .lore-text a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+    .lore-text a:hover {
+      color: var(--accent-warm);
+      text-decoration-color: var(--accent-warm);
+    }
+    .name-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      text-align: center;
+    }
+    .name-row h1 {
+      margin-bottom: 0;
+    }
+    .name-row .links {
+      margin-left: 8px;
+    }
+    footer {
+      padding: 50px 0 70px;
+      font-family: var(--font-mono);
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--rule);
+    }
+  </style>
+</head>
+<body>
+  <header class="theme-bar">
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle light and dark mode" type="button">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2"/>
+        <path d="M12 20v2"/>
+        <path d="m4.93 4.93 1.41 1.41"/>
+        <path d="m17.66 17.66 1.41 1.41"/>
+        <path d="M2 12h2"/>
+        <path d="M20 12h2"/>
+        <path d="m6.34 17.66-1.41 1.41"/>
+        <path d="m19.07 4.93-1.41 1.41"/>
+      </svg>
+    </button>
+  </header>
+  <div class="container">
+
+    <header>
+      <div class="name-row">
+        <h1>Adam Elimadi</h1>
+        <div class="links">
+          <a href="https://github.com/Brokttv" title="GitHub" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="https://x.com/wickedbrok" title="X" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="mailto:elimadadam@gmail.com" title="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+          </a>
+          <a href="cv.pdf" title="CV" target="_blank">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="lore-text">
+        <p>I'm Adam, born in Boston and raised in CasaBlanca. I speak 4 languages fluently (English, French, Darija, Arabic). I graduated high school majoring in <a href="https://x.com/wickedbrok/status/2045209727920189727?s=20" target="_blank">Physics and Chemistry</a> with a score of 17.84/20, considered top percentile nation-wide. I came back to Boston for the first time in 17 years to pursue higher studies, arrived with so many expectations and big hopes, but life took an unforeseen 180-degree turn so I had to adapt (still figuring it out).</p>
+        <p>I got interested in AI mid 2024 and <a href="https://x.com/wickedbrok/status/2073951354213597474?s=20" target="_blank">started self-teaching</a> ML early 2025. Beginning in 2026, I started gradually pivoting to AI safety, where I got extremely interested in interpretability and joined <a href="https://web.mit.edu/aialignment/www/getinvolved/" target="_blank">MAIA</a> (MIT AI Alignment) as an AISF fellow. After 3 months, I wrote my first <a href="https://drive.google.com/file/d/1NfyJG78SOFYjbp5ASrZabzXGHrpQYXeg/view" target="_blank">paper</a> and submitted it to the COLM Interp workshop after Claude encouraged me to (had no idea what COLM was), and it got accepted. Currently working on an exciting agenda (could robust models possibly be easier to reverse-engineer?) while independently studying <a href="https://en.wikipedia.org/wiki/Principles_of_Neural_Science" target="_blank">neuroscience</a>.</p>
+        <p>I'm a strong believer that nature has a lot to teach us and big breakthroughs are a product of interdisciplinary efforts, so I hope our brain can show us better ways of untangling those "black boxes."</p>
+      </div>
+    </header>
+
+    <section>
+      <h2>Research</h2>
+
+      <div class="pub">
+        <div class="pub-label">COLM'26 Interp Workshop</div>
+        <div>
+          <div class="pub-title">Why Adversarial Training Reduces Superposition</div>
+          <div class="pub-desc">Adversarial training abandons non-robust features → fewer total features to represent → less superposition.</div>
+          <div class="pub-link"><a href="https://github.com/Brokttv/Adversarial-Training-Reduces-Superposition-Through-Non-Robust-Feature-Pruning">[Paper]</a></div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <div class="pub-label">Blog</div>
+        <div>
+          <div class="pub-title">What Transformers Learn When They Solve MAJORITY</div>
+          <div class="pub-desc">Gradient descent converges to a token-identity clustering mechanism, categorically different from the hand-crafted uniform-attention construction by Merrill et al. (2022).</div>
+          <div class="pub-link"><a href="https://brokttv.github.io/Majority/">[Blog]</a></div>
+        </div>
+      </div>
+
+      <details class="section-collapse">
+        <summary>
+          <span class="s-closed">Show more</span>
+          <span class="s-open">Show less</span>
+        </summary>
+        <div class="section-collapse-body">
+          <div class="pub">
+            <div class="pub-label">Repo</div>
+            <div>
+              <div class="pub-title">LoRA Without Regret: LR Ratio & Adapter Dynamics</div>
+              <div class="pub-desc">Empirically confirmed that the widely-cited 10× LoRA-vs-FullFT learning-rate ratio is an artifact of initialization regime, α/r ratio, and rank.</div>
+              <div class="pub-link"><a href="https://github.com/Brokttv/Lora-Without-Regret">[Repo]</a></div>
+            </div>
+          </div>
+
+          <div class="pub">
+            <div class="pub-label">Repo</div>
+            <div>
+              <div class="pub-title">ViT on Small Data</div>
+              <div class="pub-desc">The Lightest Vision Transformer (ViT) trained from scratch out there to achieve 93.37 ± 0.07% top-1 accuracy on CIFAR-10 within just 50 epochs.</div>
+              <div class="pub-link"><a href="https://github.com/Brokttv/Vit-on-small-data">[Repo]</a></div>
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <h2>Replications</h2>
+
+      <div class="repl">
+        <div class="repl-title"><a href="https://arxiv.org/abs/2404.02948" target="_blank">PiSSA: Principal Singular Values and Singular Vectors Adaptation</a></div>
+        <div class="repl-link"><a href="https://github.com/Brokttv/PISSA-Without-Regret">[Repo]</a></div>
+      </div>
+
+      <div class="repl">
+        <div class="repl-title"><a href="https://arxiv.org/abs/1706.03762" target="_blank">Attention Is All You Need</a></div>
+        <div class="repl-link"><a href="https://github.com/Brokttv/Transformer-from-scratch">[Repo]</a></div>
+      </div>
+
+      <details class="section-collapse">
+        <summary>
+          <span class="s-closed">Show more</span>
+          <span class="s-open">Show less</span>
+        </summary>
+        <div class="section-collapse-body">
+          <div class="repl">
+            <div class="repl-title"><a href="https://arxiv.org/abs/2508.17456" target="_blank">Adversarial Examples Are Not Bugs, They Are Superposition</a></div>
+            <div class="repl-link"><a href="https://github.com/Brokttv/Robustness-Superposition-causality">[Repo]</a></div>
+          </div>
+
+          <div class="repl">
+            <div class="repl-title"><a href="https://thinkingmachines.ai/blog/lora/" target="_blank">LoRA Without Regret (Thinking Machines)</a></div>
+            <div class="repl-link"><a href="https://github.com/Brokttv/Lora-Without-Regret">[Repo]</a></div>
+          </div>
+
+          <div class="repl">
+            <div class="repl-title"><a href="https://arxiv.org/abs/2010.11929" target="_blank">An Image is Worth 16x16 Words (ViT)</a></div>
+            <div class="repl-link"><a href="https://github.com/Brokttv/Vit-on-small-data">[Repo]</a></div>
+          </div>
+
+          <div class="repl">
+            <div class="repl-title">Classic Optimizers, From Scratch</div>
+            <div class="repl-desc">Implemented SGD, Momentum, Nesterov, Adagrad, RMSProp, and Adam from scratch in NumPy, then trained toy models with each to verify convergence behavior.</div>
+            <div class="repl-link"><a href="https://github.com/Brokttv/optimizers-from-scratch">[Repo]</a></div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <h2>Writing</h2>
+      <div class="item">
+        <a href="https://towardsai.net/p/l/initialization-batchnorm-and-layernorm-beyond-textbook-definitions">Initialization, BatchNorm, and LayerNorm: The Holy Trilogy</a>
+        <div class="meta">Towards AI · June 2025</div>
+      </div>
+      <div class="item">
+        <a href="https://ai.gopubby.com/if-youre-a-ml-beginner-learn-this-first-e2d64cbcbafb">A Look into NNs Training Dynamics</a>
+        <div class="meta">AI Advances · September 2025</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Progression</h2>
+
+      <div class="t-item">
+        <div class="t-date">July 2026</div>
+        <div class="t-text">Paper accepted to the COLM 2026 AI &amp; World Workshop.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">June 2026</div>
+        <div class="t-text">Wrote my first ever paper and submitted it to COLM (now under review).</div>
+      </div>
+      <div class="t-item">
+        <div class="t-date">May 2026</div>
+        <div class="t-text">Answered a key question raised in the paper and published my second research blog (<a href="https://brokttv.github.io/blog-2/" target="_blank">blog</a>).</div>
+      </div>
+
+      <details class="t-collapse">
+        <summary>
+          <span class="s-closed">Show more</span>
+          <span class="s-open">Show less</span>
+        </summary>
+        <div class="t-collapse-body">
+          <div class="t-item">
+            <div class="t-date">April 2026</div>
+            <div class="t-text">Took time to study robustness and ended up implementing the paper (<a href="https://github.com/Brokttv/Robustness-Superposition-causality" target="_blank">repo</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">April 2026</div>
+            <div class="t-text">Stumbled upon a paper studying causality between robustness and superposition.</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">March 2026</div>
+            <div class="t-text">Got further interested in mech-interp and started studying Anthropic's interpretability papers.</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">Feb 2026</div>
+            <div class="t-text">Built on the paper the blog discussed and published my first research blog (<a href="https://brokttv.github.io/Majority/" target="_blank">blog</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">Feb 2026</div>
+            <div class="t-text">Got interested in mechanistic interpretability and read my first interp blog.</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">Jan 2026</div>
+            <div class="t-text">Implemented the PiSSA paper and compared it to LoRA following the same config (<a href="https://github.com/Brokttv/PISSA-Without-Regret" target="_blank">repo</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">Jan 2026</div>
+            <div class="t-text">Implemented a LoRA paper by Thinking Machines and extended it, answering a key open question (<a href="https://github.com/Brokttv/Lora-Without-Regret" target="_blank">repo</a>).</div>
+          </div>
+
+          <div class="t-item">
+            <div class="t-date">Sept 2025</div>
+            <div class="t-text">Finally implemented a transformer from scratch (<a href="https://github.com/Brokttv/Transformer-from-scratch" target="_blank">repo</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">August 2025</div>
+            <div class="t-text">Published my second blog about training dynamics (<a href="https://medium.com/ai-advances/if-youre-a-ml-beginner-learn-this-first-e2d64cbcbafb" target="_blank">blog</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">July 2025</div>
+            <div class="t-text">Completed my first research effort: training a tiny ViT from scratch on CIFAR-10 (<a href="https://github.com/Brokttv/Vit-on-small-data" target="_blank">repo</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">June 2025</div>
+            <div class="t-text">Learned a bit about data wrangling and preprocessing (<a href="https://github.com/Brokttv/COCO-CONVERTER" target="_blank">repo</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">May 2025</div>
+            <div class="t-text">Published my first blog about initialization and normalization (<a href="https://pub.towardsai.net/initialization-batchnorm-and-layernorm-beyond-textbook-definitions-9306b02c7e9a?sharedUserId=elimadiadam" target="_blank">blog</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">March 2025</div>
+            <div class="t-text">Implemented all famous optimizers from scratch in NumPy and used them to train toy models (<a href="https://github.com/Brokttv/optimizers-from-scratch" target="_blank">repo</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">Feb 2025</div>
+            <div class="t-text">Learned to train a small model (forward and backward pass) using linear algebra on scratch paper, then using NumPy only in code (<a href="https://github.com/Brokttv/training_models_from_scratch" target="_blank">repo</a>).</div>
+          </div>
+          <div class="t-item">
+            <div class="t-date">Jan 2025</div>
+            <div class="t-text">Learning the fundamentals (neurons, MLPs, gradients, optimizers, initialization, normalization).</div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <footer>
+      Last updated August 2026
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('theme-toggle');
+      var root = document.documentElement;
+      btn.addEventListener('click', function () {
+        var isDark = root.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          root.removeAttribute('data-theme');
+          try { localStorage.setItem('adam-theme', 'light'); } catch (e) {}
+        } else {
+          root.setAttribute('data-theme', 'dark');
+          try { localStorage.setItem('adam-theme', 'dark'); } catch (e) {}
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
