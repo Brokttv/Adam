@@ -90,10 +90,28 @@
     .theme-toggle .icon-sun { display: none; }
     [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
-    .container {
-      max-width: 720px;
+    .page-wrap {
+      max-width: 1080px;
       margin: 0 auto;
       padding: 0 24px;
+      display: grid;
+      grid-template-columns: minmax(0, 720px) 240px;
+      justify-content: center;
+      gap: 48px;
+      align-items: start;
+    }
+    .container {
+      max-width: 720px;
+      min-width: 0;
+    }
+    @media (max-width: 1200px) {
+      .page-wrap {
+        grid-template-columns: minmax(0, 720px);
+        justify-content: center;
+      }
+      .qa-sidebar {
+        display: none;
+      }
     }
     header {
       padding: 72px 0 40px;
@@ -394,12 +412,170 @@
     details.t-collapse .t-collapse-body {
       padding-top: 20px;
     }
+    .qa-sidebar {
+      position: sticky;
+      top: 100px;
+      align-self: start;
+      padding-top: 72px;
+    }
+    .qa-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+    .qa-sidebar h2 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+    .qa-form {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--rule);
+    }
+    .qa-form textarea {
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      color: var(--ink);
+      background: var(--bg-raised);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: 5px 7px;
+      resize: vertical;
+      min-height: 30px;
+      line-height: 1.3;
+    }
+    .qa-form textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .qa-form button {
+      align-self: flex-start;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      color: var(--bg);
+      background: var(--accent);
+      border: none;
+      border-radius: 4px;
+      padding: 4px 9px;
+      cursor: pointer;
+      transition: background 150ms ease;
+    }
+    .qa-form button:hover {
+      background: var(--accent-warm);
+    }
+    .qa-status {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--ink-muted);
+      display: none;
+    }
+    .qa-status.visible {
+      display: block;
+    }
+    .qa-list {
+      max-height: 280px;
+      overflow-y: auto;
+      padding-right: 10px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--rule) transparent;
+    }
+    .qa-list::-webkit-scrollbar {
+      width: 5px;
+    }
+    .qa-list::-webkit-scrollbar-thumb {
+      background: var(--rule);
+      border-radius: 3px;
+    }
+    .qa-list::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .qa-item {
+      border-left: 2px solid var(--rule);
+      padding-left: 10px;
+      margin-bottom: 14px;
+    }
+    .qa-item:last-child {
+      margin-bottom: 4px;
+    }
+    .qa-date {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--ink-faint);
+      margin-bottom: 2px;
+    }
+    .qa-q {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.83rem;
+      color: var(--ink);
+      margin-bottom: 2px;
+      line-height: 1.35;
+    }
+    .qa-a {
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      line-height: 1.45;
+      max-height: 2.9em;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--rule) transparent;
+    }
+    .qa-a::-webkit-scrollbar {
+      width: 4px;
+    }
+    .qa-a::-webkit-scrollbar-thumb {
+      background: var(--rule);
+      border-radius: 3px;
+    }
+    .qa-a::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .qa-a.pending {
+      font-style: italic;
+      color: var(--ink-faint);
+    }
+    .callout-note {
+      background: #FBF1D9;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 6px 6px 0;
+      padding: 22px 26px;
+      margin-top: 28px;
+    }
+    [data-theme="dark"] .callout-note {
+      background: #2E2712;
+    }
+    .callout-note p {
+      font-family: var(--font-body);
+      font-style: italic;
+      color: #1F1B16;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+    [data-theme="dark"] .callout-note p {
+      color: #F2EEE5;
+    }
+    .callout-smile {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 600;
+    }
     .lore-text p {
       font-family: var(--font-body);
       color: var(--ink);
-      font-size: 1rem;
-      line-height: 1.75;
-      margin-bottom: 1.1em;
+      font-size: 0.94rem;
+      line-height: 1.55;
+      margin-bottom: 0.75em;
     }
     .lore-text p:last-child {
       margin-bottom: 0;
@@ -458,6 +634,7 @@
       </svg>
     </button>
   </header>
+  <div class="page-wrap">
   <div class="container">
 
     <header>
@@ -480,9 +657,13 @@
       </div>
 
       <div class="lore-text">
-        <p>I'm Adam, born in Boston and raised in Casablanca. I speak four languages fluently (English, French, Darija, Arabic). I graduated high school majoring in <a href="https://x.com/wickedbrok/status/2045209727920189727?s=20" target="_blank">Physics and Chemistry</a> earning a score of 17.84/20, placing me in the top 1% nationwide. I came back to Boston for the first time in 17 years to pursue higher studies. I arrived with so many expectations and big hopes, but I was struck with a bit of unforseen events so I had to adapt (still figuring it out).</p>
+        <p>I'm Adam, born in Boston and raised in Morocco. I speak 4 languages fluently (English, French, Darija, Arabic). I graduated high school majoring in <a href="https://x.com/wickedbrok/status/2045209727920189727?s=20" target="_blank">Physics and Chemistry</a> with a score of 17.84/20, considered top percentile nation-wide. I came back to Boston for the first time in 17 years to pursue higher studies, arrived with so many expectations and big hopes, but life took an unforeseen 180-degree turn so I had to adapt (still figuring it out).</p>
         <p>I got interested in AI mid 2024 and <a href="https://x.com/wickedbrok/status/2073951354213597474?s=20" target="_blank">started self-teaching</a> ML early 2025. Beginning in 2026, I started gradually pivoting to AI safety, where I got extremely interested in interpretability and joined <a href="https://web.mit.edu/aialignment/www/getinvolved/" target="_blank">MAIA</a> (MIT AI Alignment) as an AISF fellow. After 3 months, I wrote my first <a href="https://drive.google.com/file/d/1NfyJG78SOFYjbp5ASrZabzXGHrpQYXeg/view" target="_blank">paper</a> and submitted it to the COLM Interp workshop after Claude encouraged me to (had no idea what COLM was), and it got accepted. Currently working on an exciting agenda (could robust models possibly be easier to reverse-engineer?) while independently studying <a href="https://en.wikipedia.org/wiki/Principles_of_Neural_Science" target="_blank">neuroscience</a>.</p>
-        <p>I'm a strong believer that nature has a lot to teach us and big breakthroughs are a product of interdisciplinary efforts, so I hope our brain can show us better ways of untangling those "black boxes".</p>
+        <p>I'm a strong believer that nature has a lot to teach us and big breakthroughs are a product of interdisciplinary efforts, so I hope our brain can show us better ways of untangling those "black boxes."</p>
+      </div>
+
+      <div class="callout-note">
+        <p>I am always open to research collaboration &amp; internship opportunities. If you see a fit, please send an email. And if you're around Boston and want to hang out, also reach out. Strangers are perhaps friends we don't know yet <span class="callout-smile">(:</span></p>
       </div>
     </header>
 
@@ -681,6 +862,26 @@
     </footer>
   </div>
 
+  <aside class="qa-sidebar">
+    <div class="qa-label">Ask me anything</div>
+    <h2>Q&amp;A</h2>
+
+    <form class="qa-form" id="qa-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+      <textarea name="question" placeholder="Ask a question..." required></textarea>
+      <button type="submit">Submit</button>
+      <div class="qa-status" id="qa-status"></div>
+    </form>
+
+    <div class="qa-list">
+      <div class="qa-item">
+        <div class="qa-date">Aug 2026</div>
+        <div class="qa-q">What do you optimize for in life?</div>
+        <div class="qa-a">I see humans as vectors in a high-dimensional space, and that space is intelligence. The coordinates of these vectors refer to all the faculties unique to us (e.g. relationships, character, career, religiosity, deeds, knowledge, morality, etc.). I want my vector to surpass a certain threshold norm spanning the space in the right direction, so when I die, I get to die as a successful human being, not solely as a successful researcher, football player, or businessman.</div>
+      </div>
+    </div>
+  </aside>
+  </div>
+
   <script>
     (function () {
       var btn = document.getElementById('theme-toggle');
@@ -694,6 +895,31 @@
           root.setAttribute('data-theme', 'dark');
           try { localStorage.setItem('adam-theme', 'dark'); } catch (e) {}
         }
+      });
+    })();
+
+    (function () {
+      var form = document.getElementById('qa-form');
+      var status = document.getElementById('qa-status');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var data = new FormData(form);
+        status.textContent = 'Sending...';
+        status.classList.add('visible');
+        fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        }).then(function (res) {
+          if (res.ok) {
+            status.textContent = 'Thanks, got it!';
+            form.reset();
+          } else {
+            status.textContent = 'Something went wrong, try again.';
+          }
+        }).catch(function () {
+          status.textContent = 'Something went wrong, try again.';
+        });
       });
     })();
   </script>
