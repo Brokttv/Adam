@@ -91,23 +91,24 @@
     [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
     .page-wrap {
-      max-width: 1080px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 0 24px;
+      padding: 0 32px;
       display: grid;
-      grid-template-columns: minmax(0, 720px) 240px;
+      grid-template-columns: minmax(0, 780px) 320px;
       justify-content: center;
-      gap: 48px;
+      gap: 64px;
       align-items: start;
     }
     .container {
-      max-width: 720px;
+      max-width: 780px;
       min-width: 0;
     }
-    @media (max-width: 1200px) {
+    @media (max-width: 1300px) {
       .page-wrap {
         grid-template-columns: minmax(0, 720px);
         justify-content: center;
+        padding: 0 24px;
       }
       .qa-sidebar {
         display: none;
