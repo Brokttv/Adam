@@ -265,6 +265,18 @@
       color: var(--accent-warm);
       text-decoration-color: var(--accent-warm);
     }
+    .repl-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--ink-faint);
+      margin-left: 8px;
+    }
+    .repl-badge::before {
+      content: "· ";
+    }
     details.section-collapse {
       margin-top: 4px;
     }
@@ -418,6 +430,48 @@
       top: 100px;
       align-self: start;
       padding-top: 72px;
+    }
+    .news-mobile {
+      display: none;
+    }
+    @media (max-width: 1300px) {
+      .news-mobile {
+        display: block;
+        margin-top: 28px;
+      }
+      .news-mobile > summary {
+        list-style: none;
+        cursor: pointer;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--ink);
+        padding: 14px 0;
+        border-top: 1px solid var(--rule);
+        user-select: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .news-mobile > summary::-webkit-details-marker { display: none; }
+      .news-mobile > summary::marker { content: ""; }
+      .news-mobile > summary::after {
+        content: "↓";
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--ink-faint);
+      }
+      .news-mobile[open] > summary::after {
+        content: "↑";
+      }
+      .news-mobile .section-collapse-body {
+        max-height: 280px;
+        overflow-y: auto;
+        padding: 16px 4px 4px;
+      }
+      .news-mobile .s-open { display: none; }
+      .news-mobile[open] .s-open { display: inline; }
+      .news-mobile[open] .s-closed { display: none; }
     }
     .qa-label {
       font-family: var(--font-mono);
@@ -666,6 +720,31 @@
       <div class="callout-note">
         <p>I am always open to research collaboration &amp; internship opportunities. If you see a fit, please send an email. And if you're around Boston and want to hang out, also reach out. Perhaps strangers are friends we don't know yet <span class="callout-smile">(:</span></p>
       </div>
+
+      <details class="news-mobile">
+        <summary>
+          <span class="s-closed">News</span>
+          <span class="s-open">News</span>
+        </summary>
+        <div class="section-collapse-body">
+          <div class="qa-item">
+            <div class="qa-date">Sept 2026</div>
+            <div class="qa-q">Joined AISST (AI Student Safety Team, Harvard) as a member.</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-date">Aug 14, 2026</div>
+            <div class="qa-q">Presented research at NEMI 2026, the 3rd New England Mechanistic Interpretability Workshop, at Boston University.</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-date">July 2026</div>
+            <div class="qa-q">Paper accepted to the COLM 2026 AI &amp; World Workshop.</div>
+          </div>
+          <div class="qa-item">
+            <div class="qa-date">March 2026</div>
+            <div class="qa-q">Joined MAIA (MIT AI Alignment) as an AISF fellow.</div>
+          </div>
+        </div>
+      </details>
     </header>
 
     <section>
@@ -718,6 +797,14 @@
 
     <section>
       <h2>Replications</h2>
+
+      <div class="repl repl-highlight">
+        <div class="repl-title">
+          <a href="https://github.com/Brokttv/EAP-GP" target="_blank">EAP-GP</a>
+          <span class="repl-badge">first public documentation</span>
+        </div>
+        <div class="repl-link"><a href="https://github.com/Brokttv/EAP-GP">[Repo]</a></div>
+      </div>
 
       <div class="repl">
         <div class="repl-title"><a href="https://arxiv.org/abs/2404.02948" target="_blank">PiSSA: Principal Singular Values and Singular Vectors Adaptation</a></div>
@@ -864,20 +951,25 @@
   </div>
 
   <aside class="qa-sidebar">
-    <div class="qa-label">Ask me anything</div>
-    <h2>Q&amp;A</h2>
-
-    <form class="qa-form" id="qa-form" action="https://formspree.io/f/mjybbvpg" method="POST">
-      <textarea name="question" placeholder="Ask a question..." required></textarea>
-      <button type="submit">Submit</button>
-      <div class="qa-status" id="qa-status"></div>
-    </form>
+    <div class="qa-label">Latest</div>
+    <h2>News</h2>
 
     <div class="qa-list">
       <div class="qa-item">
-        <div class="qa-date">Aug 2026</div>
-        <div class="qa-q">What do you optimize for in life?</div>
-        <div class="qa-a">I see humans as vectors in a high-dimensional space, and that space is intelligence. The coordinates of these vectors refer to all the faculties unique to us (e.g. relationships, character, career, religiosity, deeds, knowledge, morality, etc.). I want my vector to surpass a certain threshold norm spanning the space in the right direction, so when I die, I get to die as a successful human being, not solely as a successful researcher, football player, or businessman.</div>
+        <div class="qa-date">Sept 2026</div>
+        <div class="qa-q">Joined AISST (AI Student Safety Team, Harvard) as a member.</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-date">Aug 14, 2026</div>
+        <div class="qa-q">Presented research at NEMI 2026, the 3rd New England Mechanistic Interpretability Workshop, at Boston University.</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-date">July 2026</div>
+        <div class="qa-q">Paper accepted to the COLM 2026 AI &amp; World Workshop.</div>
+      </div>
+      <div class="qa-item">
+        <div class="qa-date">March 2026</div>
+        <div class="qa-q">Joined MAIA (MIT AI Alignment) as an AISF fellow.</div>
       </div>
     </div>
   </aside>
@@ -896,31 +988,6 @@
           root.setAttribute('data-theme', 'dark');
           try { localStorage.setItem('adam-theme', 'dark'); } catch (e) {}
         }
-      });
-    })();
-
-    (function () {
-      var form = document.getElementById('qa-form');
-      var status = document.getElementById('qa-status');
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var data = new FormData(form);
-        status.textContent = 'Sending...';
-        status.classList.add('visible');
-        fetch(form.action, {
-          method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' }
-        }).then(function (res) {
-          if (res.ok) {
-            status.textContent = 'Thanks, got it!';
-            form.reset();
-          } else {
-            status.textContent = 'Something went wrong, try again.';
-          }
-        }).catch(function () {
-          status.textContent = 'Something went wrong, try again.';
-        });
       });
     })();
   </script>
